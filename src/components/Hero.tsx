@@ -2,6 +2,7 @@
 import { club, heroPhrases } from "../data/site";
 import { useTypewriter } from "../hooks/useTypewriter";
 import { ErrorCascade } from "./Retro";
+import NeonScene from "./NeonScene";
 
 export default function Hero() {
   const typed = useTypewriter(heroPhrases);
@@ -9,60 +10,36 @@ export default function Hero() {
   return (
     <section
       id="top"
-      className="relative overflow-hidden px-5 pt-20 pb-24 sm:px-8 sm:pt-28 sm:pb-32"
+      className="relative bg-gradient-to-b from-[#08060c] to-transparent px-5 pb-16 sm:px-8 sm:pb-20"
     >
-      {/* background layers */}
+      {/* soft edge so the solid hero blends into the page below */}
       <div
-        className="absolute inset-0 -z-10 bg-gradient-to-b from-transparent via-ink/70 to-ink"
-        aria-hidden="true"
-      />
-      <div
-        className="absolute top-[-12rem] left-1/2 -z-10 h-[28rem] w-[38rem] -translate-x-1/2 bg-mint/10 blur-[120px]"
+        className="pointer-events-none absolute inset-x-0 top-full z-10 bg-gradient-to-b from-[#08060c] to-transparent"
         aria-hidden="true"
       />
 
-      {/* oversized ghost wordmark — zine cut-and-paste overlap */}
-      <p
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 top-10 -z-10 hidden select-none text-center font-mono text-[8rem] leading-none font-black tracking-tighter text-white/[0.035] uppercase sm:block sm:text-[11rem]"
-      >
-        {club.short}
-      </p>
+      {/* full-bleed scene; the container below is pulled up under its faded edge */}
+      <div className="-mx-5 sm:-mx-8">
+        <NeonScene />
+      </div>
 
-      {/* corner ticks — brutalist frame */}
-      <span
-        aria-hidden="true"
-        className="absolute top-4 left-4 h-4 w-4 border-t-2 border-l-2 border-mint/50"
-      />
-      <span
-        aria-hidden="true"
-        className="absolute top-4 right-4 h-4 w-4 border-t-2 border-r-2 border-mint/50"
-      />
-
-      <div className="relative mx-auto max-w-4xl text-center">
+      <div className="relative mx-auto -mt-10 max-w-4xl text-center sm:-mt-20">
         <p className="inline-flex items-center gap-2 rounded-full border border-edge bg-panel/70 px-4 py-1.5 font-mono text-xs text-neutral-300">
           <span className="h-1.5 w-1.5 rounded-full bg-mint" aria-hidden="true" />
           {club.school} · Student Organization
         </p>
 
-        <h1
-          data-text={club.name}
-          className="glitch mt-7 text-5xl font-crt tracking-wide uppercase sm:text-7xl"
-        >
-          {club.name}
-        </h1>
-
-        <p className="mt-5 font-mono text-lg text-neutral-300 sm:text-2xl">
+        <p className="mt-3 font-mono text-lg text-neutral-300 sm:text-2xl">
           <span className="text-muted select-none">$ </span>
           <span className="text-mint">./learn</span>{" "}
           <span className="caret">{typed}</span>
         </p>
 
-        <p className="mx-auto mt-7 max-w-2xl text-base leading-relaxed text-neutral-400 sm:text-lg">
+        <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-neutral-400 sm:text-lg">
           {club.description}
         </p>
 
-        <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
+        <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
           <a
             href="#join"
             className="glow-mint w-full rounded-lg bg-mint px-7 py-3.5 font-mono text-sm font-semibold text-ink transition-colors hover:bg-mint-dim sm:w-auto"
@@ -77,7 +54,7 @@ export default function Hero() {
           </a>
         </div>
 
-        <dl className="mx-auto mt-14 grid max-w-2xl grid-cols-1 gap-px overflow-hidden rounded-xl border border-edge bg-edge sm:grid-cols-3">
+        <dl className="mx-auto mt-12 grid max-w-2xl grid-cols-1 gap-px overflow-hidden rounded-xl border border-edge bg-edge sm:grid-cols-3">
           {[
             { k: "When", v: club.meeting.cadence },
             { k: "Time", v: club.meeting.time },
@@ -94,7 +71,7 @@ export default function Hero() {
           ))}
         </dl>
 
-        <ErrorCascade className="mx-auto mt-16" />
+        <ErrorCascade className="mx-auto mt-12" />
       </div>
     </section>
   );

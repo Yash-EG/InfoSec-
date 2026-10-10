@@ -18,7 +18,6 @@ export function useTypewriter(
 ): string {
   const [text, setText] = useState("");
   const indexRef = useRef(0);
-  const erasingRef = useRef(false);
 
   const reduced =
     typeof window !== "undefined" &&
@@ -31,30 +30,35 @@ export function useTypewriter(
     }
 
     let timer: ReturnType<typeof setTimeout>;
+    let current = "";
+    let erasing = false;
 
+    // State lives in locals, not in a setText updater: updaters must be pure,
+    // and StrictMode double-invokes them, which used to schedule two timers
+    // per tick (exponential growth -> main-thread jank over time).
     const tick = () => {
       const full = phrases[indexRef.current];
+      let delay: number;
 
-      setText((prev) => {
-        if (!erasingRef.current) {
-          const next = full.slice(0, prev.length + 1);
-          if (next === full) {
-            erasingRef.current = true;
-            timer = setTimeout(tick, holdMs);
-          } else {
-            timer = setTimeout(tick, typeMs);
-          }
-          return next;
+      if (!erasing) {
+        current = full.slice(0, current.length + 1);
+        if (current === full) {
+          erasing = true;
+          delay = holdMs;
+        } else {
+          delay = typeMs;
         }
-
-        const next = prev.slice(0, -1);
-        if (next.length === 0) {
-          erasingRef.current = false;
+      } else {
+        current = current.slice(0, -1);
+        if (current.length === 0) {
+          erasing = false;
           indexRef.current = (indexRef.current + 1) % phrases.length;
         }
-        timer = setTimeout(tick, eraseMs);
-        return next;
-      });
+        delay = eraseMs;
+      }
+
+      setText(current);
+      timer = setTimeout(tick, delay);
     };
 
     timer = setTimeout(tick, typeMs);

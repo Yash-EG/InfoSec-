@@ -360,7 +360,10 @@ export function Marquee({
   reverse?: boolean;
   tone?: "mint" | "gold";
 }) {
-  const strip = Array.from({ length: 4 }, () => text).join("   ///   ");
+  // nbsp: `white-space: nowrap` collapses normal spaces, which ate the
+  // trailing separator and glued the two copies together at the seam.
+  const sep = "\u00a0\u00a0\u00a0///\u00a0\u00a0\u00a0";
+  const strip = Array.from({ length: 4 }, () => text).join(sep) + sep;
 
   return (
     <div

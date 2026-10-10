@@ -28,7 +28,7 @@ export default function Navbar() {
         "sticky top-0 z-50 transition-colors duration-200",
         scrolled
           ? "border-b border-edge bg-ink/85 backdrop-blur-md"
-          : "border-b border-transparent",
+          : "nav-fog border-b border-transparent",
       ].join(" ")}
     >
       <nav
